@@ -1,4 +1,4 @@
 KMTextTools
 ===========
 
-@2013 Gianluca Nieri, GPL v2 licence
+@2013 Gianluca Nieri, GNU GPL v2 licence
