@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<array>
+	<dict>
+		<key>Activate</key>
+		<string>Normal</string>
+		<key>IsActive</key>
+		<true/>
+		<key>Macros</key>
+		<array>
+			<dict>
+				<key>Actions</key>
+				<array>
+					<dict>
+						<key>IsActive</key>
+						<true/>
+						<key>IsDisclosed</key>
+						<true/>
+						<key>KeyCode</key>
+						<integer>8</integer>
+						<key>MacroActionType</key>
+						<string>SimulateKeystroke</string>
+						<key>Modifiers</key>
+						<integer>256</integer>
+						<key>ReleaseAll</key>
+						<false/>
+					</dict>
+					<dict>
+						<key>IsActive</key>
+						<true/>
+						<key>IsDisclosed</key>
+						<true/>
+						<key>MacroActionType</key>
+						<string>SetVariableToText</string>
+						<key>Text</key>
+						<string>%CurrentClipboard%</string>
+						<key>Variable</key>
+						<string>Testo</string>
+					</dict>
+					<dict>
+						<key>Buttons</key>
+						<array>
+							<dict>
+								<key>Button</key>
+								<string>Modify to clipboard!</string>
+								<key>Cancel</key>
+								<false/>
+							</dict>
+							<dict>
+								<key>Button</key>
+								<string>Cancel</string>
+								<key>Cancel</key>
+								<true/>
+							</dict>
+						</array>
+						<key>IsActive</key>
+						<true/>
+						<key>IsDisclosed</key>
+						<true/>
+						<key>MacroActionType</key>
+						<string>PromptForUserInput</string>
+						<key>Prompt</key>
+						<string>Choose the transformation you want to perform on the copied text</string>
+						<key>TimeOutAbortsMacro</key>
+						<true/>
+						<key>Title</key>
+						<string>Action</string>
+						<key>Variables</key>
+						<array>
+							<dict>
+								<key>Default</key>
+								<string>Echo|Capitalize all text|Capitalize only first letter|Capitalize every first letter|Lowercase|Contrary|Contrary by line|Reverse lines|Count lines|Count words</string>
+								<key>Variable</key>
+								<string>Azione</string>
+							</dict>
+						</array>
+					</dict>
+					<dict>
+						<key>ClipboardTargetNamedClipboardRedundantDisplayName</key>
+						<string>Default Clipboard</string>
+						<key>ClipboardTargetNamedClipboardUID</key>
+						<string>11422754-F784-4A95-BDE3-140A542984F9</string>
+						<key>ClipboardTargetUseNamedClipboard</key>
+						<false/>
+						<key>DisplayKind</key>
+						<string>Clipboard</string>
+						<key>IsActive</key>
+						<true/>
+						<key>IsDisclosed</key>
+						<true/>
+						<key>MacroActionType</key>
+						<string>ExecuteShellScript</string>
+						<key>Path</key>
+						<string>/Users/gianx/Dropbox/Progetti/__Python/KMTextTools/test_string.py "$KMVAR_Azione" "$KMVAR_Testo"</string>
+						<key>Text</key>
+						<string>#!/usr/bin/python
+#coding=utf-8
+#
+# String functions for Python
+#
+
+import sys
+import os
+
+new_line = "\n"
+not_words="\\|!\"£$%&amp;/()=?^é*è+[]ç°§òàù@#¶;:_,.-&lt;&gt;".decode("utf-8")
+
+class StringManager:
+	def __init__ (self, original):
+		self.text = original
+		self.original = original
+
+	def get_text(self):
+		return self.text
+
+	def get_original(self):
+		return self.original
+	
+	def reset(self):
+		self.text = self.original
+
+	def capitalize(self):
+		self.text = self.text.upper()
+
+	def capitalize_single(self):
+		self.text = self.text.title()
+	
+	def capitalize_first(self):
+		self.text = self.text[0].upper() + self.text[1:len(self.text)]
+	
+	def lowercase(self):
+		self.text = self.text.lower()
+
+	def contrary(self):
+		out = ""
+		for x in range(0,len(self.text)):
+			out += self.text[len(self.text)-x-1]
+		self.text = out
+
+	def contrary_byline(self):
+		out = ""
+		for y in self.text.split(new_line):
+			for x in range(0,len(y)):
+				out += y[len(y)-x-1]
+			out += new_line
+		self.text = out
+	
+	def reverse_lines(self):
+		self.text = "\n".join(self.text.split(new_line)[::-1])
+
+	def count_lines(self):
+		return len(self.text.split(new_line))
+
+	def count_words(self):
+		count = 0
+		for x in self.text.split(new_line):
+			for y in x.split(" "):
+				if y not in not_words:
+					count += 1
+		return count
+
+#
+# START MAIN
+#
+
+command=os.getenv('KMVAR_Azione')
+mytext=os.getenv('KMVAR_Testo')
+
+mystr=StringManager(mytext)
+
+if command.lower()=="echo": mystr.reset()
+if command.lower()=="capitalize all text": mystr.capitalize()
+if command.lower()=="capitalize only first letter": mystr.capitalize_first()
+if command.lower()=="capitalize every first letter": mystr.capitalize_single()
+if command.lower()=="lowercase": mystr.lowercase()
+if command.lower()=="contrary": mystr.contrary()
+if command.lower()=="contrary by line": mystr.contrary_byline()
+if command.lower()=="reverse lines": mystr.reverse_lines()
+if command.lower()=="count lines": out = mystr.count_lines()
+if command.lower()=="count words": out = mystr.count_words()
+if (mystr.get_text() != mystr.get_original()) or (command.lower()=="echo"):
+	out=mystr.get_text()
+
+print out
+
+</string>
+						<key>TimeOutAbortsMacro</key>
+						<true/>
+						<key>TrimResults</key>
+						<true/>
+						<key>TrimResultsNew</key>
+						<true/>
+						<key>UseText</key>
+						<true/>
+					</dict>
+					<dict>
+						<key>Action</key>
+						<string>DisplayBriefly</string>
+						<key>IsActive</key>
+						<true/>
+						<key>IsDisclosed</key>
+						<true/>
+						<key>MacroActionType</key>
+						<string>InsertText</string>
+						<key>Paste</key>
+						<false/>
+						<key>Text</key>
+						<string>%CurrentClipboard%</string>
+					</dict>
+				</array>
+				<key>IsActive</key>
+				<true/>
+				<key>ModificationDate</key>
+				<real>407606009.04216897</real>
+				<key>Name</key>
+				<string>Text manager2</string>
+				<key>Triggers</key>
+				<array>
+					<dict>
+						<key>FireType</key>
+						<string>Pressed</string>
+						<key>KeyCode</key>
+						<integer>17</integer>
+						<key>MacroTriggerType</key>
+						<string>HotKey</string>
+						<key>Modifiers</key>
+						<integer>6912</integer>
+					</dict>
+				</array>
+				<key>UID</key>
+				<string>AEDE800D-319D-422D-A1F7-B1A45B500B6F</string>
+			</dict>
+		</array>
+		<key>Name</key>
+		<string>Gianx</string>
+		<key>UID</key>
+		<string>4C14E011-28B1-4418-977E-088F68053A23</string>
+	</dict>
+</array>
+</plist>
