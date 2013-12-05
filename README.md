@@ -66,4 +66,27 @@ the quick brown fox
 
 9
 
+### Prepare list for Oracle IN statement 
+
+This option is useful when you have a list and want to transform it in a string useful for Oracle statements.
+
+For exemple if you have this list:
+
+PEAR
+APPLE
+ORANGE
+BANANA
+
+you obtain 
+
+('PEAR','APPLE','ORANGE','BANANA')
+
+### Replace newline with space
+
+Easy to understand. Consider the list above.
+
+The output is:
+
+PEAR APPLE ORANGE BANANA
+
 @2013 Gianluca Nieri, GNU GPL v2 licence
