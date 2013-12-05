@@ -70,7 +70,7 @@
 						<array>
 							<dict>
 								<key>Default</key>
-								<string>Echo|Capitalize all text|Capitalize only first letter|Capitalize every first letter|Lowercase|Contrary|Contrary by line|Reverse lines|Count lines|Count words</string>
+								<string>Echo|Capitalize all text|Capitalize only first letter|Capitalize every first letter|Lowercase|Contrary|Contrary by line|Reverse lines|Count lines|Count words|Prepare list for oracle in statement|Replace newline with space</string>
 								<key>Variable</key>
 								<string>Azione</string>
 							</dict>
@@ -160,14 +160,28 @@ class StringManager:
 					count += 1
 		return count
 
+	def list_sql(self):
+		out = ""
+		tmp = self.text.split("\n")
+		for x in tmp:
+			if x&lt;&gt;"":
+				out +=  "'" + x +"',"
+		self.text = "("+out[:-1]+")"
+	
+	def replace_newline_with_space(self):
+		self.text = self.text.replace("\n"," ")
 #
 # START MAIN
 #
-
-command=os.getenv('KMVAR_Azione')
-mytext=os.getenv('KMVAR_Testo')
+try:
+	command=sys.argv[1]
+	mytext=sys.argv[2]
+except:
+	command=os.getenv('KMVAR_Azione')
+	mytext=os.getenv('KMVAR_Testo')
 
 mystr=StringManager(mytext)
+
 
 if command.lower()=="echo": mystr.reset()
 if command.lower()=="capitalize all text": mystr.capitalize()
@@ -179,12 +193,11 @@ if command.lower()=="contrary by line": mystr.contrary_byline()
 if command.lower()=="reverse lines": mystr.reverse_lines()
 if command.lower()=="count lines": out = mystr.count_lines()
 if command.lower()=="count words": out = mystr.count_words()
+if command.lower()=="prepare list for oracle in statement": out = mystr.list_sql()
+if command.lower()=="replace newline with space": out = mystr.replace_newline_with_space()
 if (mystr.get_text() != mystr.get_original()) or (command.lower()=="echo"):
 	out=mystr.get_text()
-
-print out
-
-</string>
+print out</string>
 						<key>TimeOutAbortsMacro</key>
 						<true/>
 						<key>TrimResults</key>
@@ -212,9 +225,9 @@ print out
 				<key>IsActive</key>
 				<true/>
 				<key>ModificationDate</key>
-				<real>407606009.04216897</real>
+				<real>407935583.47223401</real>
 				<key>Name</key>
-				<string>Text manager2</string>
+				<string>Text manager</string>
 				<key>Triggers</key>
 				<array>
 					<dict>
